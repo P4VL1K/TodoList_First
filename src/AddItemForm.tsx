@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {IconButton, TextField} from "@material-ui/core";
+import {AddCircleOutline} from "@material-ui/icons";
 
 
 
@@ -28,14 +30,24 @@ const AddItemForm = (props: AddItemFormPropsType) => {
     const onKeyDownAddTask = (e: KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && addItem()
     return (
         <div>
-            <input
-                style={errorInputStyle}
+            <TextField
+                // style={errorInputStyle}
+                variant={'outlined'}
+                label={'title'}
+                size={'small'}
+                color={'primary'}
                 value={title}
                 onChange={onChangeSetTitle}
                 onKeyDown={onKeyDownAddTask}
+                error={error}
+                helperText={error && "Title is required!"}
             />
-            <button onClick={addItem}>+</button>
-            {error && <div style={{color: "red", fontWeight: "bold"}}>Title is required!</div>}
+            <IconButton
+                onClick={addItem}
+                color={'primary'}>
+                <AddCircleOutline/>
+            </IconButton>
+            {/*{error && <div style={{color: "red", fontWeight: "bold"}}>Title is required!</div>}*/}
         </div>
     );
 };

@@ -3,6 +3,8 @@ import {FilterValuesType} from "./App";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import {uptime} from "os";
+import {Button, Checkbox, IconButton, List, ListItem} from "@material-ui/core";
+import {AddCircleOutline, CheckBox, DeleteOutline, HighlightOff} from "@material-ui/icons";
 
 type TodoListPropsType = {
     todoListID: string
@@ -35,15 +37,25 @@ const TodoList = (props: TodoListPropsType) => {
             }
         const taskClasses = t.isDone? 'is-done' : '';
         return (
-            <li key={t.id}>
-                <input
+            <ListItem
+                style={{padding: "0px"}}
+                key={t.id}>
+                <Checkbox
+                    color={'primary'}
+                    size={'small'}
                     onChange={changeStatus}
-                    type="checkbox"
                     checked={t.isDone}/>
                 <EditableSpan classes={taskClasses} title={t.title} updateTitle={changeTaskTitle}/>
+
                 {/*<span className={taskClasses}>{t.title}</span>*/}
-                <button onClick={removeTask}>x</button>
-            </li>
+                <IconButton
+                    color={'secondary'}
+                    onClick={removeTask}
+                    size={"small"}>
+                    <HighlightOff/>
+                </IconButton>
+                {/*<button onClick={removeTask}>x</button>*/}
+            </ListItem>
         )
     })
         : <span>List is empty</span>
@@ -57,26 +69,42 @@ const TodoList = (props: TodoListPropsType) => {
     const addTask = (title: string) => {
         props.addTask(title, props.todoListID)
     }
-    const allBtnClasses = props.filter === "all" ? "active-filter" : "";
-    const activeBtnClasses = props.filter === "active" ? "active-filter" : "";
-    const completedBtnClasses = props.filter === "completed" ? "active-filter" : "";
+    const removeTodolist = () => {props.removeTodoList(props.todoListID)}
+
     return (
         <div>
             <h3>
                 <EditableSpan title={props.title} updateTitle={changeTodoListTitle}/>
-                <button onClick={() => {props.removeTodoList(props.todoListID)}}>x</button>
+                <IconButton
+                    color={'secondary'}
+                    size={'small'}
+                    onClick={removeTodolist}>
+                    <HighlightOff/>
+                </IconButton>
             </h3>
             <AddItemForm addItem={addTask} />
-            <ul>
+            <List>
                 {tasksJSXElement}
-            </ul>
+            </List>
             <div>
-                <button className={allBtnClasses}
-                    onClick={() => changeFilter("all")}>All</button>
-                <button className={activeBtnClasses}
-                    onClick={() => changeFilter("active")}>Active</button>
-                <button className={completedBtnClasses}
-                    onClick={() => changeFilter("completed")}>Completed</button>
+                <Button
+                    size={'small'}
+                    color={props.filter === "all" ? "secondary" : "primary"}
+                    disableElevation
+                    variant={'contained'}
+                    onClick={() => changeFilter("all")}>All</Button>
+                <Button
+                    size={'small'}
+                    color={props.filter === "active" ? "secondary" : "primary"}
+                    disableElevation
+                    variant={'contained'}
+                    onClick={() => changeFilter("active")}>Active</Button>
+                <Button
+                    size={'small'}
+                    color={props.filter === "completed" ? "secondary" : "primary"}
+                    disableElevation
+                    variant={'contained'}
+                    onClick={() => changeFilter("completed")}>Completed</Button>
             </div>
         </div>
     )
